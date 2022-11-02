@@ -1,1 +1,15 @@
-downloaded/*
+.gitignore
+/downloaded
+/build
+/dist
+/__pycache__
+/lib/__pycache__
+/logs/*
+MTG Art Downloader.spec
+MTG Art Downloader.exe
+run.bat
+main.spec
+/lists
+tester.py
+/venv
+/lib/matches

@@ -19,6 +19,7 @@
 	"e02": "dop",
 	"fem": "fal",
 	"5dn": "fda",
+	"v12": "fre",
 	"v17": "ftr",
 	"gpt": "gui",
 	"hml": "hom",
@@ -88,5 +89,7 @@
 	"lea": "alp",
 	"cm1": "cma",
 	"j20": "dci",
-	"g08": "dci"
+	"g08": "dci",
+	"jgp": "dci",
+	"tsb": "tsp"
 }
