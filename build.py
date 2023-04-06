@@ -6,14 +6,14 @@ import sys
 import zipfile
 from glob import glob
 from pathlib import Path
-from shutil import copy2, copytree, rmtree, move
+from shutil import copy2, rmtree, move
 import PyInstaller.__main__
 
 # Folder definitions
 CWD = os.getcwd()
 DIST = os.path.join(CWD, "dist")
-MTG = os.path.join(os.getcwd(), "lib")
-DIST_MTG = os.path.join(os.getcwd(), "dist/lib")
+SRC = os.path.join(os.getcwd(), "src")
+DIST_SRC = os.path.join(os.getcwd(), "dist/src")
 
 # All individual files that need to be copied upon pyinstaller completion
 files = [
@@ -24,31 +24,22 @@ files = [
     {"src": os.path.join(CWD, "config.ini"), "dst": os.path.join(DIST, "config.ini")},
     # --- SOURCE DIRECTORY
     {
-        "src": os.path.join(MTG, "codes.hjson"),
-        "dst": os.path.join(DIST_MTG, "codes.hjson"),
+        "src": os.path.join(SRC, "codes.hjson"),
+        "dst": os.path.join(DIST_SRC, "codes.hjson"),
     },
     {
-        "src": os.path.join(MTG, "links.json"),
-        "dst": os.path.join(DIST_MTG, "links.json"),
-    },
-    {
-        "src": os.path.join(MTG, "scryfall.json"),
-        "dst": os.path.join(DIST_MTG, "scryfall.json"),
+        "src": os.path.join(SRC, "links.json"),
+        "dst": os.path.join(DIST_SRC, "links.json"),
     },
 ]
 
-# Folders that need to be copied
-folders: list = [
-    # --- WORKING DIRECTORY
-    # {'src': os.path.join(CWD, "lists"), 'dst': os.path.join(DIST, 'lists')}
-]
 
-
-def clear_build_files(clear_dist=True):
+def clear_build_files(clear_dist: bool = True):
     """
     Clean out all PYCACHE files and Pyinstaller files
     """
     os.system("pyclean -v .")
+    os.system("pyclean -v .venv")
     try:
         rmtree(os.path.join(os.getcwd(), "build"))
     except Exception as e:
@@ -66,8 +57,7 @@ def make_dirs():
     """
     # Ensure folders exist
     Path(DIST).mkdir(mode=511, parents=True, exist_ok=True)
-    Path(DIST_MTG).mkdir(mode=511, parents=True, exist_ok=True)
-    Path(DIST_MTG).mkdir(mode=511, parents=True, exist_ok=True)
+    Path(DIST_SRC).mkdir(mode=511, parents=True, exist_ok=True)
 
 
 def move_data():
@@ -79,13 +69,8 @@ def move_data():
     for f in files:
         copy2(f["src"], f["dst"])
 
-    # Transfer our necessary folders
-    print("Transferring data folders...")
-    for f in folders:
-        copytree(f["src"], f["dst"])
 
-
-def build_zip(version):
+def build_zip(version: str):
     """
     Create a zip of this release.
     """
@@ -111,5 +96,10 @@ if __name__ == "__main__":
 
     # Post-build steps
     move_data()
-    build_zip(sys.argv[1])
+
+    # Produce a zip if argument is provided
+    if len(sys.argv) > 1:
+        build_zip(sys.argv[1])
+
+    # Clear build files
     clear_build_files(False)

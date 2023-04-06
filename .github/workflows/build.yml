@@ -12,31 +12,30 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: macos-10.15
+          - os: macos-latest
             TARGET: macos
           - os: windows-latest
             TARGET: windows
           - os: ubuntu-latest
             TARGET: linux
     steps:
-    - uses: actions/checkout@v2
-    - uses: browser-actions/setup-chrome@latest
-    - name: Set up Python 3.10
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
-        python-version: "3.10"
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: false
-    - name: Install dependencies
+        python-version: "3.11"
+    #-----------------------------------------------
+    #  -----  install Poetry and Dependencies  -----
+    #-----------------------------------------------
+    - name: Install Poetry & Dependencies
       run: |
+        python -m pip install -U pip poetry
         poetry install
     - name: Build with PyInstaller
       run: |
-        poetry run python build.py ${{ github.ref_name }}
+        poetry run python build.py
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
-        path: ./dist/mtg-art-downloader.${{ github.ref_name }}.zip
+        path: ./dist/
         name: MTG Art Downloader (${{ matrix.TARGET }})
