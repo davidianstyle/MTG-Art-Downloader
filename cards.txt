@@ -8,3 +8,13 @@ unf--Steam Vents
 unf--Stomping Ground
 unf--Temple Garden
 unf--Watery Grave
+Blood Crypt (rna) 245
+Breeding Pool (rna) 246
+Godless Shrine (rna) 248
+Hallowed Fountain (rna) 251
+Overgrown Tomb (grn) 253
+Sacred Foundry (grn) 254
+Steam Vents (grn) 257
+Stomping Ground (rna) 259
+Temple Garden (grn) 258
+Watery Grave (grn) 259
